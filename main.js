@@ -1,4 +1,11 @@
-console.log("Hello There");
+const buttons = document.querySelector('.buttons')
+let btns = `
+<button type="button" class="btn btn-primary">Cats</button>
+<button type="button" class="btn btn-secondary">Dogs</button>
+<button type="button" class="btn btn-success">Dinos</button>`
+
+buttons.innerHTML = btns;
+
 
 const pets = [
     {
@@ -242,3 +249,25 @@ const pets = [
       imageUrl: "http://lsae2.iypcdn.com/static//modules/uploads/photos/language1/dino-live-22.jpg?119"
     }
   ];
+
+
+
+
+
+const cards = document.querySelector('#cards')
+let domString = ""
+
+for (const pet of pets) {
+  domString += `<div class="card" style="width: 18rem;">
+  <img src="${pet.imageUrl}" class="card-img-top" alt="Pet Image">
+  <div class="card-body">
+    <h5 class="card-title">${pet.name}</h5>
+    <p class="card-text">ID: ${pet.id}</p>
+    <p class="card-text">Color: ${pet.color}</p>
+    <p class="card-text">Special Skill: ${pet.specialSkill}</p>
+    <p class="card-text">Type: ${pet.type}</p>
+  </div>
+</div>`
+}
+
+cards.innerHTML = domString;
