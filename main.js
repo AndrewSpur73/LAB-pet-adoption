@@ -1,10 +1,3 @@
-const buttons = document.querySelector('.buttons')
-let btns = `
-<button type="button" class="btn btn-primary">Cats</button>
-<button type="button" class="btn btn-secondary">Dogs</button>
-<button type="button" class="btn btn-success">Dinos</button>`
-
-buttons.innerHTML = btns;
 
 
 const pets = [
@@ -254,10 +247,9 @@ const pets = [
 
 
 
-const cards = document.querySelector('#cards')
+const cardsOnDom = (array) => {
 let domString = ""
-
-for (const pet of pets) {
+for (const pet of array) {
   domString += `<div class="card" style="width: 18rem;">
   <img src="${pet.imageUrl}" class="card-img-top" alt="Pet Image">
   <div class="card-body">
@@ -268,6 +260,67 @@ for (const pet of pets) {
     <p class="card-text">Type: ${pet.type}</p>
   </div>
 </div>`
+  }
+  renderToDom("#cards", domString) 
 }
 
-cards.innerHTML = domString;
+
+const renderToDom = (divId, htmlToRender) => {
+  const selectedDiv = document.querySelector(divId);
+  selectedDiv.innerHTML = htmlToRender;
+};
+
+const filter = (cards, typeString) => {
+  const typeArray = [];
+  for (const member of cards) {
+    if (member.type === typeString) {
+      typeArray.push(member);
+    }
+  }
+
+  return typeArray;
+};
+
+const showAllButton = document.querySelector("#allPets-btn");
+const showCatsButton = document.querySelector("#cats");
+const showDogsButton = document.querySelector("#dogs");
+const showDinosButton = document.querySelector("#dinos");
+
+showAllButton.addEventListener("click", () => {
+  cardsOnDom(pets);
+});
+
+showCatsButton.addEventListener("click", () => {
+  const cats = filter(pets, "cat");
+  cardsOnDom(cats);
+});
+
+showDogsButton.addEventListener("click", () => {
+  const dogs = filter(pets, "dog");
+  cardsOnDom(dogs);
+});
+
+showDinosButton.addEventListener("click", () => {
+  const dinos = filter(pets, "dino");
+  cardsOnDom(dinos);
+});
+
+const form = document.querySelector('form');
+
+const createPet = (e) => {
+  e.preventDefault();
+
+  const newPetObj = {
+    id: pets.length + 1,
+    name: document.querySelector("#name").value,
+    color: document.querySelector("#color").value,
+    specialSkill: document.querySelector("#specialSkill").value,
+    type: document.querySelector('#type').value,
+    image: document.querySelector("#image").value
+  }
+  pets.push(newPetObj);
+  cardsOnDom(pets);
+  form.reset();
+}
+
+form.addEventListener('submit', createPet);
