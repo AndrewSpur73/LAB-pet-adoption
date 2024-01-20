@@ -244,9 +244,6 @@ const pets = [
   ];
 
 
-
-
-
 const cardsOnDom = (array) => {
 let domString = ""
 for (const pet of array) {
@@ -281,6 +278,8 @@ const filter = (cards, typeString) => {
   return typeArray;
 };
 
+window.addEventListener("load", () => {cardsOnDom(pets)});
+
 const showAllButton = document.querySelector("#allPets-btn");
 const showCatsButton = document.querySelector("#cats");
 const showDogsButton = document.querySelector("#dogs");
@@ -307,6 +306,7 @@ showDinosButton.addEventListener("click", () => {
 
 const form = document.querySelector('form');
 
+
 const createPet = (e) => {
   e.preventDefault();
 
@@ -318,6 +318,7 @@ const createPet = (e) => {
     type: document.querySelector('#type').value,
     image: document.querySelector("#image").value
   }
+  
   pets.push(newPetObj);
   cardsOnDom(pets);
   form.reset();
