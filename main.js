@@ -1,3 +1,4 @@
+let filterToggle = true;
 
 
 const pets = [
@@ -268,15 +269,16 @@ const renderToDom = (divId, HtmlToRender) => {
   selectedDiv.innerHTML = HtmlToRender;
 };
 
-//Creating a filter f
-const filter = (cards, typeString) => {
+//Creating a filter
+const filter = (typeString) => {
+  filterToggle = false;
   const typeArray = [];
-  for (const member of cards) {
+  for (const member of pets) {
     if (member.type === typeString) {
       typeArray.push(member);
     }
   }
-  return typeArray;
+    cardsOnDom(typeArray);
 }
 
 window.addEventListener("load", () => {cardsOnDom(pets)});
@@ -287,22 +289,20 @@ const showDogsButton = document.querySelector("#dogs");
 const showDinosButton = document.querySelector("#dinos");
 
 showAllButton.addEventListener("click", () => {
+  filterToggle = true;
   cardsOnDom(pets);
 });
 
 showCatsButton.addEventListener("click", () => {
-  const cats = filter(pets, "cat");
-  cardsOnDom(cats);
+  filter("cat");
 });
 
 showDogsButton.addEventListener("click", () => {
-  const dogs = filter(pets, "dog");
-  cardsOnDom(dogs);
+  filter("dog");
 });
 
 showDinosButton.addEventListener("click", () => {
-  const dinos = filter(pets, "dino");
-  cardsOnDom(dinos);
+  filter("dino");
 });
 
 const form = document.querySelector('form');
@@ -336,8 +336,16 @@ cards.addEventListener('click', (e) => {
     const [ , id] = e.target.id.split("--");
 // 4. add logic to remove from array - .findIndex is an array method / .splice moddifies the original array
     const index = pets.findIndex(e => e.id === Number(id));
+    
+    const pet = pets.find((p) => p.id === Number(id))
+    
     pets.splice(index, 1);
-    cardsOnDom(pets);
+
+    if (filterToggle) {
+      cardsOnDom(pets)
+    } else {
+      filter(pet.type);
+    }
 }
 });
 
