@@ -245,28 +245,30 @@ const pets = [
 
 
 const cardsOnDom = (array) => {
-let domString = ""
-for (const pet of array) {
-  domString += `<div class="card" style="width: 18rem;">
-  <img src="${pet.imageUrl}" class="card-img-top" alt="Pet Image">
-  <div class="card-body">
-    <h5 class="card-title">${pet.name}</h5>
-    <p class="card-text">ID: ${pet.id}</p>
-    <p class="card-text">Color: ${pet.color}</p>
-    <p class="card-text">Special Skill: ${pet.specialSkill}</p>
-    <p class="card-text">Type: ${pet.type}</p>
-  </div>
-</div>`
+  let domString = ''
+  for (const pet of array) {
+    domString += 
+    `<div class="card" style="width: 18rem;">
+    <img src="${pet.imageUrl}" class="card-img-top" alt="Pet Image">
+    <div class="card-body">
+      <h5 class="card-title">${pet.name}</h5>
+      <p class="card-text">${pet.id}</p>
+      <p class="card-text">${pet.color}</p>
+      <p class="card-text">${pet.specialSkill}</p>
+      <p class="card-text">${pet.type}</p>
+      <button class="btn btn-danger" id="delete--${pet.id}">Delete</button>      
+    </div>
+  </div>`
   }
-  renderToDom("#cards", domString) 
+  renderToDom("#cards", domString)
 }
 
-
-const renderToDom = (divId, htmlToRender) => {
+const renderToDom = (divId, HtmlToRender) => {
   const selectedDiv = document.querySelector(divId);
-  selectedDiv.innerHTML = htmlToRender;
+  selectedDiv.innerHTML = HtmlToRender;
 };
 
+//Creating a filter f
 const filter = (cards, typeString) => {
   const typeArray = [];
   for (const member of cards) {
@@ -274,9 +276,8 @@ const filter = (cards, typeString) => {
       typeArray.push(member);
     }
   }
-
   return typeArray;
-};
+}
 
 window.addEventListener("load", () => {cardsOnDom(pets)});
 
@@ -306,7 +307,6 @@ showDinosButton.addEventListener("click", () => {
 
 const form = document.querySelector('form');
 
-
 const createPet = (e) => {
   e.preventDefault();
 
@@ -316,7 +316,7 @@ const createPet = (e) => {
     color: document.querySelector("#color").value,
     specialSkill: document.querySelector("#specialSkill").value,
     type: document.querySelector('#type').value,
-    image: document.querySelector("#image").value
+    imageUrl: document.querySelector("#image").value
   }
   
   pets.push(newPetObj);
@@ -325,3 +325,25 @@ const createPet = (e) => {
 }
 
 form.addEventListener('submit', createPet);
+
+// 1. Target the app div
+const cards = document.querySelector("#cards")
+// 2. Add an event listener to capture clicks
+cards.addEventListener('click', (e) => {
+// 3. check e.target.id includes "delete"
+  if (e.target.id.includes("delete")) {
+// destructuring:
+    const [ , id] = e.target.id.split("--");
+// 4. add logic to remove from array - .findIndex is an array method / .splice moddifies the original array
+    const index = pets.findIndex(e => e.id === Number(id));
+    pets.splice(index, 1);
+    cardsOnDom(pets);
+}
+});
+
+const startApp = () => {
+  cardsOnDom(pets);
+}
+
+
+startApp();
